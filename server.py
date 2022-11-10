@@ -1,9 +1,8 @@
 from model import RandomModel, TrashAgent
-from mesa.visualization.modules import CanvasGrid, BarChartModule, PieChartModule
+from mesa.visualization.modules import CanvasGrid, BarChartModule, PieChartModule, ChartModule
 from mesa.visualization.ModularVisualization import ModularServer
 
-COLORS = {"Trash": "#00AA00", "Cleaned": "#880000"}
-
+COLORS = {"Trash": "#f54242", "Cleaned": "#109130"}
 
 def agent_portrayal(agent):
     if agent is None: return
@@ -11,29 +10,35 @@ def agent_portrayal(agent):
     portrayal = {"Shape": "circle",
                  "Filled": "true",
                  "Layer": 1,
-                 "Color": "red",
+                 "Color": "#1c87eb",
                  "r": 0.5}
 
     if (isinstance(agent, TrashAgent)):
-        portrayal["Color"] = "green"
+        portrayal["Color"] = "#f54242"
         portrayal["Layer"] = 0
         portrayal["r"] = 0.2
 
     return portrayal
 
-model_params = {"N":5, "width":10, "height":10}
+model_params = {"N":6, "width":10, "height":10}
 
 grid = CanvasGrid(agent_portrayal, 10, 10, 500, 500)
 
+# Gráfica movimientos por roomba
 bar_chart = BarChartModule(
-    [{"Label":"Pasos por Roomba", "Color":"#AA0000"}], 
+    [{"Label":"Pasos por Roomba", "Color":"#1c87eb"}], 
     scope="agent", sorting="ascending", sort_by="Steps")
 
+# Gráfica porcentaje de basura limpiada
 pie_chart = PieChartModule(
     [{"Label": label, "Color": color} for (label, color) in COLORS.items()],
 )
 
-server = ModularServer(RandomModel, [grid, pie_chart, bar_chart], "Random Agents", model_params)
+tree_chart = ChartModule(
+    [{"Label": "Cleaned", "Color": COLORS["Cleaned"]}],
+)
+
+server = ModularServer(RandomModel, [grid, bar_chart, pie_chart, tree_chart], "Random Agents", model_params)
                        
 server.port = 8521 # The default
 server.launch()
