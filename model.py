@@ -8,12 +8,13 @@ from trash_agent import TrashAgent
 
 class RandomModel(Model):
     """ 
-    Creates a new model with random agents.
+    Roomba robots aim to clean dirty cells in a grid
     Args:
-        N: Number of agents in the simulation
-        height, width: The size of the grid to model
+        N: Number of roombas in the simulation
+        Step Limit: Ammount of steps that the simulation is allowed to take
+
     """
-    def __init__(self, N, width, height):
+    def __init__(self, N, width, height, timeLimit):
         self.num_agents = N
         self.num_trash = 20
         self.remaining_trash = self.num_trash
@@ -21,7 +22,7 @@ class RandomModel(Model):
         self.schedule = RandomActivation(self)
         self.running = True
         self.visited_cells = set()
-        self.time_limit = 500
+        self.time_limit = timeLimit
         self.current_steps = 0
         self.datacollector = DataCollector( 
             agent_reporters={
