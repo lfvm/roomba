@@ -2,7 +2,7 @@ from mesa import Model, agent
 from mesa.time import RandomActivation
 from mesa.space import MultiGrid
 from mesa.datacollection import DataCollector
-from random_agent import RandomAgent
+from roomba_agent import RandomAgent
 from trash_agent import TrashAgent
 
 
